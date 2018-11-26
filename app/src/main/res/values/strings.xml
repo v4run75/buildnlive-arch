@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Buildo</string>
+    <string name="app_name">BuildnLive</string>
     <string name="title_activity_home">Home</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -46,7 +46,49 @@
         <item>Civil</item>
         <item>Structure</item>
     </string-array>
+    <string-array name="duration_type">
+        <item>Select Duration Type</item>
+        <item>Days</item>
+        <item>Hours</item>
+    </string-array>
 
+    <string-array name="quantity_unit">
+        <item>Select Unit</item>
+        <item>cm</item>
+        <item>m</item>
+        <item>feet</item>
+    </string-array>
+    <string-array name="vendor_type">
+        <item>Labour Contractor</item>
+        <item>Supplier</item>
+        <item>Material Contractor</item>
+        <item>General Contractor</item>
+    </string-array>
+    <string-array name="employee_type">
+        <item>Procurement Manager</item>
+        <item>Site Storekeeper</item>
+        <item>Site Engineer</item>
+        <item>Project/Site Incharge</item>
+    </string-array>
+    <string-array name="project_status">
+        <item>Select Status</item>
+        <item>Started</item>
+        <item>On Hold</item>
+        <item>Delete</item>
+        <item>Added</item>
+    </string-array>
+
+    <string-array name="project_type">
+        <item>Select Type</item>
+        <item>Residential Flat</item>
+        <item>Residential Kothi</item>
+        <item>High Rise Apartments</item>
+        <item>Clinic</item>
+        <item>Multi/Super Speciality Hospital</item>
+        <item>School</item>
+        <item>Commercial Complex</item>
+        <item>Interior Fitout</item>
+    </string-array>
 
 
 </resources>

@@ -34,25 +34,14 @@
             android:id="@+id/edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/round_right_selected"
+            android:background="@drawable/round"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="Request Items"
+            android:text="Add Stock"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="20dp" />
 
-        <TextView
-            android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/round_left"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="View items"
-            android:textAlignment="center"
-            android:textColor="@color/color2"
-            android:textSize="20dp" />
 
     </LinearLayout>
 

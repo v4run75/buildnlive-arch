@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="buildnlive.com.buildlive">
+    package="buildnlive.com.arch">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -11,40 +11,49 @@
         android:required="true" />
 
     <application
-        android:name=".App"
+        android:name="buildnlive.com.arch.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_buildnlive_logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_buildnlive_logo_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.HomeActivity">
+        <activity android:name="buildnlive.com.arch.activities.HomeActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MarkAttendance" />
-        <activity android:name=".activities.AddItem" />
-        <activity android:name=".activities.IssuedItems" />
-        <activity android:name=".activities.RequestItems" />
-        <activity android:name=".activities.WorkProgress" />
-        <activity android:name=".activities.DailyWorkProgressActivities" />
-        <activity android:name=".activities.PurchaseOrder" />
-        <activity android:name=".activities.NotificationActivity"/>
-        <activity android:name=".activities.IndentItems"/>
-        <activity android:name=".activities.LocalPurchase"/>
-        <activity android:name=".activities.LabourActivity"/>
-        <activity android:name=".activities.ResetActivity"/>
+        <activity android:name="buildnlive.com.arch.activities.MarkAttendance"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.AddItem"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.IssuedItems"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.WorkProgress"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.DailyWorkProgressActivities"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.PurchaseOrder"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.NotificationActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.LocalPurchase" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.ResetActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.PaymentActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.RegisterActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.CreateItem" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ManageActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ManageEmployee" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ImageView" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.CreatePurchaseOrder" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.CreateWorkActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ManageVendor" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.WorkData" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
 
 
         <activity
-            android:name=".activities.MainActivity"
-            android:theme="@style/AppTheme" />
-        <activity android:name=".activities.PreviewImage" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.PurchaseOrderListing" />
+            android:name="buildnlive.com.arch.activities.MainActivity"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.PreviewImage" android:windowSoftInputMode="stateHidden"  android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.LoginActivity"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name="buildnlive.com.arch.activities.PurchaseOrderListing"  android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -56,7 +65,10 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activities.Main2Activity"></activity>
+        <activity android:name="buildnlive.com.arch.activities.Main2Activity"></activity>
+        <activity android:name=".activities.LabourActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ManageLabour" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ManageLabourReport" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

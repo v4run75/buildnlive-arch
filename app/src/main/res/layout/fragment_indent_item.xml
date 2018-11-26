@@ -146,7 +146,16 @@
         android:alpha="0.6"
         android:background="#ffffff"
         android:visibility="gone" />
-
+    <Button
+        android:id="@+id/add_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/next"
+        android:background="@color/color1"
+        android:text="Add"
+        android:textColor="@color/white"
+        android:textSize="20dp"
+        android:visibility="gone" />
     <Button
         android:id="@+id/next"
         android:layout_width="match_parent"

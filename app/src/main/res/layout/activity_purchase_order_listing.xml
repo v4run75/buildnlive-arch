@@ -3,7 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey">
-<LinearLayout
+    <LinearLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_back_black"
+            android:background="@color/transparent"/>
+
+
+        <LinearLayout
+            android:id="@+id/action"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/round"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:text="Purchase Order"
+                android:singleLine="true"
+                android:ellipsize="marquee"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:textSize="20dp" />
+
+
+
+
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/top"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="2"
@@ -44,7 +91,7 @@
             android:layout_marginRight="10dp"
             android:background="@color/color1" />
 
-        <buildnlive.com.buildlive.utils.AdvancedRecyclerView
+        <buildnlive.com.arch.utils.AdvancedRecyclerView
             android:id="@+id/images"
             android:layout_weight="2.39"
             android:layout_width="match_parent"

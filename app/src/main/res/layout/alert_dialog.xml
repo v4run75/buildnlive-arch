@@ -36,7 +36,7 @@
             android:textColor="@color/color4"
             android:textSize="18dp" />
 
-        <buildnlive.com.buildlive.utils.AdvancedRecyclerView
+        <buildnlive.com.arch.utils.AdvancedRecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
