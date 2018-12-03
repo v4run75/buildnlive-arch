@@ -69,6 +69,7 @@
         <activity android:name=".activities.LabourActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageLabour" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageLabourReport" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.ManageItem" />
     </application>
 
 </manifest>

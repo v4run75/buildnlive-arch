@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -50,6 +51,7 @@ public class EmployeeFragment extends Fragment {
     private Fragment fragment;
     private android.app.AlertDialog.Builder builder;
     public static String name_s,email_s,profession_s,user_id_s,mobile_no_s;
+    private TextView no_content;
 
     public static EmployeeFragment newInstance() {
         return new EmployeeFragment();
@@ -77,6 +79,8 @@ public class EmployeeFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Realm realm =Realm.getDefaultInstance();
+        no_content=view.findViewById(R.id.no_content);
+
         recyclerView=view.findViewById(R.id.items);
         app=(App) getActivity().getApplication();
         builder = new android.app.AlertDialog.Builder(getContext());
@@ -218,6 +222,15 @@ public class EmployeeFragment extends Fragment {
                         employeeList.add(new Employee().parseFromJSON(array.getJSONObject(i)));
                     }
                     console.log("data set changed");
+                    if(employeeList.isEmpty()){
+                        no_content.setVisibility(View.VISIBLE);
+                        no_content.setText("No Vendor");
+                    }
+                    else
+                    {
+                        no_content.setVisibility(View.GONE);
+                    }
+
                     adapter = new EmployeeAdapter(getContext(), employeeList, listner);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();

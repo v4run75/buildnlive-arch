@@ -71,7 +71,7 @@ public class CreateWorkFragment extends Fragment {
     private AlertDialog.Builder builder;
     private EditText work_name;
     private static String cat_id,work_id,workName;
-    private boolean val;
+    private boolean val=true;
 
     public static CreateWorkFragment newInstance() {
         return new CreateWorkFragment();
@@ -169,8 +169,8 @@ public class CreateWorkFragment extends Fragment {
 //                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
 //                            public void onClick(DialogInterface dialog, int id) {
                                 workName=work_name.getText().toString();
-//                                if(validate(cat_id,work_id,workName)){
                                 Intent intent= new Intent(getActivity(),WorkData.class);
+                                if(validate(cat_id,work_id,workName)){
                                 Bundle bundle= new Bundle();
                                 bundle.putString("cat_id",cat_id);
                                 bundle.putString("work_id",work_id);
@@ -178,7 +178,7 @@ public class CreateWorkFragment extends Fragment {
                                 intent.putExtras(bundle);
                                 startActivity(intent);
 //                                startActivityForResult(intent,100);
-//                                }
+                                }
 //                            }
 //                        })
 //                        .setNegativeButton("No", new DialogInterface.OnClickListener() {

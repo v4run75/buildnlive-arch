@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -44,6 +45,7 @@ public class VendorFragment extends Fragment {
     private VendorAdapter adapter;
     private App app;
     private Fragment fragment;
+    private TextView no_content;
     private android.app.AlertDialog.Builder builder;
     public static String vendor_name_s,vendor_type_s,vendor_id_s,vendor_address_s,vendor_gst_s;
 
@@ -81,6 +83,7 @@ public class VendorFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Realm realm =Realm.getDefaultInstance();
+        no_content=view.findViewById(R.id.no_content);
         recyclerView=view.findViewById(R.id.items);
         app=(App) getActivity().getApplication();
         builder = new android.app.AlertDialog.Builder(getContext());
@@ -218,6 +221,14 @@ public class VendorFragment extends Fragment {
                         vendorList.add(new Vendor().parseFromJSON(array.getJSONObject(i)));
                     }
                     console.log("data set changed");
+                    if(vendorList.isEmpty()){
+                        no_content.setVisibility(View.VISIBLE);
+                        no_content.setText("No Vendor");
+                    }
+                    else
+                    {
+                        no_content.setVisibility(View.GONE);
+                    }
                     adapter = new VendorAdapter(getContext(), vendorList, listner);
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();

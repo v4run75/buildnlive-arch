@@ -44,7 +44,7 @@ public class ManageEmployee extends AppCompatActivity {
     private static ArrayList<ProjectList> list=new ArrayList<>();
     private Realm realm;
     private Fragment fragment;
-    private TextView edit, view,name,email,profession,contact;
+    private TextView edit, view,name,email,profession,contact,no_content;
     Interfaces.SyncListener listener;
     private ImageButton back,editButton,save;
     private FloatingActionButton fab;
@@ -110,6 +110,7 @@ public class ManageEmployee extends AppCompatActivity {
         setContentView(R.layout.activity_employee_profile);
         builder = new android.app.AlertDialog.Builder(this);
 
+        no_content=findViewById(R.id.no_content);
         app= ((App)getApplication());
         name=findViewById(R.id.name);
         email=findViewById(R.id.email);
@@ -265,6 +266,14 @@ public class ManageEmployee extends AppCompatActivity {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
                         projectList.add(new ProjectEmployee().parseFromJSON(array.getJSONObject(i)));
+                    }
+                    if(projectList.isEmpty())
+                    {
+                        no_content.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        no_content.setVisibility(View.GONE);
                     }
                     adapter = new ProjectEmployeeAdapter(getApplicationContext(), projectList, listner);
                     recyclerView.setAdapter(adapter);

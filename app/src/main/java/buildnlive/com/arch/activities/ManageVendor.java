@@ -44,7 +44,7 @@ public class ManageVendor extends AppCompatActivity {
     private static ArrayList<ProjectList> list=new ArrayList<>();
     private Realm realm;
     private Fragment fragment;
-    private TextView edit, view,name,address,type_id,gst_no;
+    private TextView edit, view,name,address,type_id,gst_no,no_content;
     Interfaces.SyncListener listener;
     private ImageButton back,editButton,save;
     private FloatingActionButton fab;
@@ -112,6 +112,7 @@ public class ManageVendor extends AppCompatActivity {
         app= ((App)getApplication());
         builder = new android.app.AlertDialog.Builder(this);
 
+        no_content=findViewById(R.id.no_content);
         name=findViewById(R.id.name);
         address=findViewById(R.id.address);
         type_id=findViewById(R.id.type);
@@ -220,7 +221,7 @@ public class ManageVendor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    sendRequest(selection,type);
+                    sendRequest(selection);
                     alertDialog.dismiss();
                 } catch (Exception e) {
 
@@ -266,6 +267,14 @@ public class ManageVendor extends AppCompatActivity {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
                         projectList.add(new ProjectEmployee().parseFromJSON(array.getJSONObject(i)));
+                    }
+                    if(projectList.isEmpty())
+                    {
+                        no_content.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        no_content.setVisibility(View.GONE);
                     }
                     adapter = new ProjectEmployeeAdapter(getApplicationContext(), projectList, listner);
                     recyclerView.setAdapter(adapter);
@@ -313,11 +322,11 @@ public class ManageVendor extends AppCompatActivity {
         });
     }
 
-    private void sendRequest(String pro_id,String type) throws JSONException {
+    private void sendRequest(String pro_id) throws JSONException {
         HashMap<String, String> params = new HashMap<>();
         params.put("project_id",pro_id);
         params.put("vendor_id",VendorFragment.vendor_id_s);
-        params.put("type",type);
+//        params.put("type",type);
         console.log(params.toString());
         app.sendNetworkRequest(Config.ADD_VENDOR_TO_PROJECT, 1, params, new Interfaces.NetworkInterfaceListener() {
             @Override

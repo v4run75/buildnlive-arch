@@ -77,7 +77,7 @@ public class CreateActivityFragment extends Fragment {
     private AlertDialog.Builder builder;
     private EditText work_name;
     private static String project_work_list_id,work_id,workName,master_work_id,activity_id;
-    private boolean val;
+    private boolean val=true;
     private String qty_unit,duration_type_text,assign_to_text;
     private EditText duration,quantity,start_date,end_date;
     private Spinner unit,duration_type,assign_to;
@@ -121,7 +121,7 @@ public class CreateActivityFragment extends Fragment {
         builder = new AlertDialog.Builder(getContext());
         customWorkSpinner=view.findViewById(R.id.category);
         activitySpinner=view.findViewById(R.id.work);
-//        work_name=view.findViewById(R.id.work_name);
+        work_name=view.findViewById(R.id.work_name);
 
 
         customWorkSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -223,6 +223,7 @@ public class CreateActivityFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int id) {
 
                                 try {
+                                    if(validate(work_id,activity_id,work_name.getText().toString()))
                                     sendRequest(activity_id,project_work_list_id,assign_to_text,duration.getText().toString(),duration_type_text,quantity.getText().toString()
                                             ,qty_unit);
                                 } catch (JSONException e) {
@@ -262,28 +263,31 @@ public class CreateActivityFragment extends Fragment {
 
     }
 
-//    private boolean validate(String category,String item,String name)
-//    {
-//
-//        if(TextUtils.equals(category,"0")){
-//            Toast.makeText(getContext(),"Please Select Category",Toast.LENGTH_LONG).show();
+    private boolean validate(String category,String item,String name)
+    {
+
+        if(TextUtils.equals(category,"0")){
+            Toast.makeText(getContext(),"Please Select Category",Toast.LENGTH_LONG).show();
+            val=false;
+        }
+
+        if((!TextUtils.isEmpty(name))&&(!TextUtils.equals(item,"0"))){
+
+            Toast.makeText(getContext(),"Either Choose Item from the list or Enter name",Toast.LENGTH_LONG).show();
+            val=false;
+
+        }
+        if(TextUtils.isEmpty(name)&&TextUtils.equals(item,"0")){
+
+            Toast.makeText(getContext(),"Either Choose Item from the list or Enter name",Toast.LENGTH_LONG).show();
+            val=false;
+
+        }
+//        if(TextUtils.equals(duration,"Select Duration")||TextUtils.equals(unit,"Select Unit")){
 //            val=false;
 //        }
-//
-//        if((!TextUtils.isEmpty(name))&&(!TextUtils.equals(item,"0"))){
-//
-//            Toast.makeText(getContext(),"Either Choose Item from the list or Enter name",Toast.LENGTH_LONG).show();
-//            val=false;
-//
-//        }
-//        if(TextUtils.isEmpty(name)&&TextUtils.equals(item,"0")){
-//
-//            Toast.makeText(getContext(),"Either Choose Item from the list or Enter name",Toast.LENGTH_LONG).show();
-//            val=false;
-//
-//        }
-//        return val;
-//    }
+        return val;
+    }
 //
 //
 //

@@ -63,7 +63,6 @@ public class ViewItemFragment extends Fragment {
                 startActivity(new Intent(getContext(),CreateItem.class));
             }
         });
-        refresh();
     }
 
     @Override

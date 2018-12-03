@@ -167,6 +167,7 @@ public class ProjectFragment extends Fragment {
                     if (!(name.getText().toString().equals("") || type.getSelectedItem().toString().equals("Select Type")))
                     {
                         sendRequest(name.getText().toString(),type.getSelectedItem().toString());
+                        nothing.setVisibility(View.GONE);
                         alertDialog.dismiss();
                     }
                     else
