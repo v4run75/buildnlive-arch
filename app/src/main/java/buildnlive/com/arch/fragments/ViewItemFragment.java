@@ -3,7 +3,9 @@ package buildnlive.com.arch.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -36,6 +38,7 @@ public class ViewItemFragment extends Fragment {
     private ProgressBar progress;
     private TextView hider;
     private FloatingActionButton fab;
+    private CoordinatorLayout coordinatorLayout;
 
     public static ViewItemFragment newInstance(App a) {
         app=a;
@@ -53,6 +56,7 @@ public class ViewItemFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         TextView toolbar_title=getActivity().findViewById(R.id.toolbar_title);
         toolbar_title.setText("Inventory");
+        coordinatorLayout=view.findViewById(R.id.coordinatorLayout);
         items = view.findViewById(R.id.items);
         fab= view.findViewById(R.id.add);
         progress = view.findViewById(R.id.progress);
@@ -87,6 +91,13 @@ public class ViewItemFragment extends Fragment {
             public void onNetworkRequestError(String error) {
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Something went wrong, Try again later", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override

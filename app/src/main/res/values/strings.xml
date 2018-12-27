@@ -1,5 +1,15 @@
 <resources>
     <string name="app_name">BuildnLive</string>
+    <string name="Category">Category</string>
+    <string name="Work">Work</string>
+    <string name="duration_type">Duration Type</string>
+    <string name="unit_select">Unit</string>
+    <string name="assign_to">Assign To</string>
+    <string name="Activity">Activity</string>
+
+    <string name="add_project"><u>Add Project</u></string>
+    <string name="Attendance"><u>Attendance</u></string>
+    <string name="Home"><u>Home</u></string>
     <string name="title_activity_home">Home</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -8,6 +18,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="select_category">Select Category</string>
+    <string name="item">Item</string>
+    <string name="issue">Item</string>
+    <string name="member">Member</string>
     <string-array name="payment_type"><item>Select Payment Type</item><item>Credit</item><item>Debit</item></string-array>
     <string-array name="payment_mode"><item>Select Payment Mode</item><item>Cash</item><item>Draft</item><item>Cheque</item></string-array>
     <string-array name="units">
@@ -75,7 +88,7 @@
         <item>Started</item>
         <item>On Hold</item>
         <item>Delete</item>
-        <item>Added</item>
+        <item>Archive</item>
     </string-array>
 
     <string-array name="project_type">
@@ -89,6 +102,17 @@
         <item>Commercial Complex</item>
         <item>Interior Fitout</item>
     </string-array>
+
+    <string-array name="item_type">
+        <item>Select Type</item>
+        <item>Consumable</item>
+        <item>Daily Use</item>
+        <item>Machinery</item>
+        <item>Tools</item>
+    </string-array>
+
+    <string name="about_us">"BuildnLive is an initiative to simplify people's life by providing an array of personalised services at their fingertips and then at their doorstep.This application is for Architects, Builders and Contractors"</string>
+    <string name="type">Type</string>
 
 
 </resources>

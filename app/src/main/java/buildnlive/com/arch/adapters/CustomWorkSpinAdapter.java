@@ -31,6 +31,11 @@ public class CustomWorkSpinAdapter extends ArrayAdapter<CustomWork> {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public int getCount(){
         return item.size();
     }

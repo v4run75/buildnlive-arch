@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -54,6 +56,7 @@ public class SendIndentFragment extends Fragment{
     private android.support.v7.widget.SearchView searchView;
     AlertDialog.Builder builder;
     final static List<IndentItem> newItems = new ArrayList<>();
+    private CoordinatorLayout coordinatorLayout;
 
 
     public CreatePurchaseOrderAdapter.OnItemSelectedListener listener = new CreatePurchaseOrderAdapter.OnItemSelectedListener() {
@@ -104,7 +107,7 @@ public class SendIndentFragment extends Fragment{
         items.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         builder= new AlertDialog.Builder(getContext());
         searchView = view.findViewById(R.id.search_view);
-
+        coordinatorLayout=view.findViewById(R.id.coordinatorLayout);
         submit = view.findViewById(R.id.submit);
         next = view.findViewById(R.id.next);
         close = view.findViewById(R.id.close_checkout);
@@ -314,7 +317,14 @@ public class SendIndentFragment extends Fragment{
             public void onNetworkRequestError(String error) {
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);
-                Toast.makeText(getContext(),"Error"+error,Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(),"Error"+error,Toast.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Something went wrong, Try again later", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override
@@ -347,7 +357,14 @@ public class SendIndentFragment extends Fragment{
             public void onNetworkRequestError(String error) {
 
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Something went wrong, Try again later", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
 
             }
 
@@ -388,7 +405,14 @@ public class SendIndentFragment extends Fragment{
             public void onNetworkRequestError(String error) {
 
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Something went wrong, Try again later", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override

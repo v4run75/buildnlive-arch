@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +55,9 @@ public class EmployeeFragment extends Fragment {
     private android.app.AlertDialog.Builder builder;
     public static String name_s,email_s,profession_s,user_id_s,mobile_no_s;
     private TextView no_content;
+    private ProgressBar progress;
+    private TextView hider;
+    private CoordinatorLayout coordinatorLayout;
 
     public static EmployeeFragment newInstance() {
         return new EmployeeFragment();
@@ -80,6 +86,9 @@ public class EmployeeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Realm realm =Realm.getDefaultInstance();
         no_content=view.findViewById(R.id.no_content);
+        coordinatorLayout=view.findViewById(R.id.coordinatorLayout);
+        progress=view.findViewById(R.id.progress);
+        hider=view.findViewById(R.id.hider);
 
         recyclerView=view.findViewById(R.id.items);
         app=(App) getActivity().getApplication();
@@ -155,21 +164,23 @@ public class EmployeeFragment extends Fragment {
             @Override
             public void onNetworkRequestStart() {
                 employeeList.clear();
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
-                Toast.makeText(getContext(),"Something went wrong, Try again later",Toast.LENGTH_LONG).show();
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
+//                Toast.makeText(getContext(),"Something went wrong, Try again later",Toast.LENGTH_LONG).show();
+                Snackbar snackbar= Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
 
             @Override
             public void onNetworkRequestComplete(String response) {
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 console.log(response);
 //                try {
 //                    JSONArray array = new JSONArray(response);
@@ -182,6 +193,14 @@ public class EmployeeFragment extends Fragment {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
                         employeeList.add(new Employee().parseFromJSON(array.getJSONObject(i)));
+                    }
+                    if(employeeList.isEmpty()){
+                        no_content.setVisibility(View.VISIBLE);
+                        no_content.setText("No Employee");
+                    }
+                    else
+                    {
+                        no_content.setVisibility(View.GONE);
                     }
                     adapter.notifyDataSetChanged();
                 }
@@ -200,22 +219,24 @@ public class EmployeeFragment extends Fragment {
         app.sendNetworkRequest(requestUrl, Request.Method.GET, null, new Interfaces.NetworkInterfaceListener() {
             @Override
             public void onNetworkRequestStart() {
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
 
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                Snackbar snackbar= Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
 
             @Override
             public void onNetworkRequestComplete(String response) {
                 console.log(response);
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 try {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
@@ -224,7 +245,7 @@ public class EmployeeFragment extends Fragment {
                     console.log("data set changed");
                     if(employeeList.isEmpty()){
                         no_content.setVisibility(View.VISIBLE);
-                        no_content.setText("No Vendor");
+                        no_content.setText("No Employee");
                     }
                     else
                     {

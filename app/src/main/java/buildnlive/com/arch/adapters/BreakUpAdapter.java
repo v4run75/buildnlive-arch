@@ -52,7 +52,15 @@ public class BreakUpAdapter extends RecyclerView.Adapter<BreakUpAdapter.ViewHold
         holder.bind(context, items.get(position), position, listener);
     }
 
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     @Override
     public int getItemCount() {
         return items.size();

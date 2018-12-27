@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,15 @@ public class ItemListByUserAdapter extends RecyclerView.Adapter<ItemListByUserAd
     public interface OnItemClickListener {
         void onItemClick(ItemListByUser project, int pos, View view);
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     private final List<ItemListByUser> items;
     private Context context;
     private final OnItemClickListener listener;
@@ -64,7 +73,8 @@ public class ItemListByUserAdapter extends RecyclerView.Adapter<ItemListByUserAd
 
         public void bind(final Context context, final ItemListByUser item, final int pos, final OnItemClickListener listener) {
             name.setText(item.getName());
-            code.setText(item.getCode());
+            String code_string= "<b>Code: </b>"+item.getCode();
+            code.setText(Html.fromHtml(code_string));
             unit.setText(item.getUnit());
             category.setText(item.getCategory());
             itemView.setOnClickListener(new View.OnClickListener() {

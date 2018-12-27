@@ -15,13 +15,15 @@ public class ProjectList extends RealmObject {
     private String type;
     private String address;
     private String status;
+    private String date;
 
-    public ProjectList(String id, String name, String type,String address,String status) {
+    public ProjectList(String id, String name, String type,String address,String status,String date) {
         this.id = id;
         this.name = name;
         this.type = type;
         this.address=address;
-//        this.status=status;
+        this.status=status;
+        this.date=date;
     }
 
     public ProjectList() {
@@ -33,7 +35,15 @@ public class ProjectList extends RealmObject {
         setType(obj.getString("project_type"));
         setAddress(obj.getString("site_address"));
         setStatus(obj.getString("project_status"));
+        setDate(obj.getString("date"));
         return this;
+    }
+
+    private void setDate(String date) {this.date=date;
+    }
+
+    public String getDate() {
+        return date;
     }
 
     private void setStatus(String status) {this.status=status;

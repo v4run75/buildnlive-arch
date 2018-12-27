@@ -31,6 +31,11 @@ public class EmployeeSpinAdapter extends ArrayAdapter<Employee> {
     }
 
     @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
     public int getCount(){
         return item.size();
     }

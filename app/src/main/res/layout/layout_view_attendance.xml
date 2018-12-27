@@ -15,44 +15,53 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
+            android:layout_weight="2.2"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ellipsize="end"
                 android:padding="10dp"
                 android:text="lorem ipsum"
                 android:textColor="@color/black"
-                android:textSize="20dp" />
+                android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/role"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/container"
-                android:maxLines="1"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:text="Helper"
-                android:textColor="@color/grey"
-                android:textSize="18dp" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/present"
+            android:id="@+id/role"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:ellipsize="marquee"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:textAlignment="center"
-            android:text="Absent"
-            android:textSize="14dp" />
+            android:text="Helper"
+            android:gravity="center"
+            android:layout_weight="3"
+            android:textColor="@color/grey"
+            android:textSize="15dp"
+            android:singleLine="true" />
+        <TextView
+            android:id="@+id/present"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="3" />
+
+        <TextView
+            android:id="@+id/check_out"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="3" />
+
 
     </LinearLayout>
 

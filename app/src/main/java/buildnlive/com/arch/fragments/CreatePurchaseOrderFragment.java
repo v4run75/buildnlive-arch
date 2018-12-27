@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,6 +65,7 @@ public class CreatePurchaseOrderFragment extends Fragment{
     private  static String vendor;
     AlertDialog.Builder builder;
     final static List<IndentItem> newItems = new ArrayList<>();
+    private CoordinatorLayout coordinatorLayout;
 
     final List<IndentItem> cartItems = new ArrayList<>();
 
@@ -111,6 +114,7 @@ public class CreatePurchaseOrderFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         add_item = view.findViewById(R.id.add_item);
+        coordinatorLayout=view.findViewById(R.id.coordinatorLayout);
         items = view.findViewById(R.id.items);
         items.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         builder= new AlertDialog.Builder(getContext());
@@ -247,7 +251,16 @@ public class CreatePurchaseOrderFragment extends Fragment{
                                             } catch (JSONException e) {
 
                                             }
-                                        }else {Toast.makeText(getContext(),"Please Enter Address",Toast.LENGTH_LONG).show();}
+                                        }else {
+//                                            Toast.makeText(getContext(),"Please Enter Address",Toast.LENGTH_LONG).show();
+                                            final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Please Enter Address", Snackbar.LENGTH_INDEFINITE);
+                                            snackbar.setAction("Dismiss", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    snackbar.dismiss();
+                                                }
+                                            }).show();
+                                        }
                                     }
                                 })
                                 .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -347,7 +360,14 @@ public class CreatePurchaseOrderFragment extends Fragment{
             public void onNetworkRequestError(String error) {
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);
-                Toast.makeText(getContext(),"Error"+error,Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(),"Error"+error,Toast.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Check Network, Something went wrong", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override
@@ -379,7 +399,14 @@ public class CreatePurchaseOrderFragment extends Fragment{
             public void onNetworkRequestError(String error) {
 
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Check Network, Something went wrong", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
 
             }
 
@@ -405,6 +432,7 @@ public class CreatePurchaseOrderFragment extends Fragment{
         App app= ((App)getActivity().getApplication());
         String requestURl= Config.VIEW_VENDOR ;
         requestURl = requestURl.replace("[0]", App.userId);
+        requestURl = requestURl.replace("[1]", "supplier");
         vendorList.clear();
         app.sendNetworkRequest(requestURl, Request.Method.GET, null, new Interfaces.NetworkInterfaceListener() {
             @Override
@@ -416,8 +444,14 @@ public class CreatePurchaseOrderFragment extends Fragment{
             public void onNetworkRequestError(String error) {
 
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
-
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Check Network, Something went wrong", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override
@@ -456,7 +490,14 @@ public class CreatePurchaseOrderFragment extends Fragment{
             public void onNetworkRequestError(String error) {
 
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Check Network, Something went wrong", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override

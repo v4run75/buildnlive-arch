@@ -3,20 +3,24 @@ package buildnlive.com.arch.activities;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 
@@ -46,12 +50,14 @@ public class ManageVendor extends AppCompatActivity {
     private Fragment fragment;
     private TextView edit, view,name,address,type_id,gst_no,no_content;
     Interfaces.SyncListener listener;
-    private ImageButton back,editButton,save;
     private FloatingActionButton fab;
     private RecyclerView recyclerView;
     private ProjectEmployeeAdapter adapter;
     private static String selection,type;
     private android.app.AlertDialog.Builder builder;
+    private ProgressBar progress;
+    private TextView hider,editButton,save;
+    private CoordinatorLayout coordinatorLayout;
 
     private ProjectEmployeeAdapter.OnItemClickListener listner = new ProjectEmployeeAdapter.OnItemClickListener() {
         @Override
@@ -98,6 +104,7 @@ public class ManageVendor extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         refresh();
+        setProjectList();
         name.setEnabled(false);
         address.setEnabled(false);
         type_id.setEnabled(false);
@@ -108,22 +115,29 @@ public class ManageVendor extends AppCompatActivity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_profile);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
 
         app= ((App)getApplication());
         builder = new android.app.AlertDialog.Builder(this);
-
+        coordinatorLayout=findViewById(R.id.coordinatorLayout);
+        progress=findViewById(R.id.progress);
+        hider=findViewById(R.id.hider);
         no_content=findViewById(R.id.no_content);
         name=findViewById(R.id.name);
         address=findViewById(R.id.address);
         type_id=findViewById(R.id.type);
         gst_no=findViewById(R.id.gst);
-        back=findViewById(R.id.back);
         editButton=findViewById(R.id.edit);
         fab=findViewById(R.id.add);
         save=findViewById(R.id.save);
         recyclerView=findViewById(R.id.item);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
-
+        DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL);
+        recyclerView.addItemDecoration(decoration);
 
 
         name.setText(VendorFragment.vendor_name_s);
@@ -168,13 +182,7 @@ public class ManageVendor extends AppCompatActivity {
             }
         });
 //        refresh();
-        setProjectList();
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -182,7 +190,17 @@ public class ManageVendor extends AppCompatActivity {
             }
         });
     }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
     private void addProject() {
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.alert_dropdown_list, null);
@@ -247,22 +265,24 @@ public class ManageVendor extends AppCompatActivity {
         app.sendNetworkRequest(requestUrl, Request.Method.GET, null, new Interfaces.NetworkInterfaceListener() {
             @Override
             public void onNetworkRequestStart() {
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
-
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getApplicationContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onNetworkRequestComplete(String response) {
                 console.log("New Response"+response);
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 try {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
@@ -294,22 +314,24 @@ public class ManageVendor extends AppCompatActivity {
         app.sendNetworkRequest(requestUrl, Request.Method.GET, null, new Interfaces.NetworkInterfaceListener() {
             @Override
             public void onNetworkRequestStart() {
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
-
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getApplicationContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onNetworkRequestComplete(String response) {
                 console.log(response);
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 try {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
@@ -331,28 +353,31 @@ public class ManageVendor extends AppCompatActivity {
         app.sendNetworkRequest(Config.ADD_VENDOR_TO_PROJECT, 1, params, new Interfaces.NetworkInterfaceListener() {
             @Override
             public void onNetworkRequestStart() {
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);;
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),"Error"+error,Toast.LENGTH_LONG).show();
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
+//                Toast.makeText(getApplicationContext(),"Error"+error,Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onNetworkRequestComplete(String response) {
                 console.log(response);
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 if(response.equals("1")) {
-                    Toast.makeText(getApplicationContext(), "Request Generated", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Request Generated", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout,"Request Generated",Snackbar.LENGTH_LONG).show();
                     refresh();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
 
                 }
             }
@@ -367,28 +392,31 @@ public class ManageVendor extends AppCompatActivity {
         app.sendNetworkRequest(requestUrl, 1, params, new Interfaces.NetworkInterfaceListener() {
             @Override
             public void onNetworkRequestStart() {
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);;
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),"Error"+error,Toast.LENGTH_LONG).show();
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
+//                Toast.makeText(getApplicationContext(),"Error"+error,Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
             }
 
             @Override
             public void onNetworkRequestComplete(String response) {
                 console.log(response);
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 if(response.equals("1")) {
-                    Toast.makeText(getApplicationContext(), "Request Generated", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Request Generated", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout,"Request Generated",Snackbar.LENGTH_LONG).show();
                     refresh();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
 
                 }
             }
@@ -407,15 +435,16 @@ public class ManageVendor extends AppCompatActivity {
         app.sendNetworkRequest(requestUrl, 1, params, new Interfaces.NetworkInterfaceListener() {
             @Override
             public void onNetworkRequestStart() {
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);;
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
 //                progress.setVisibility(View.GONE);
 //                hider.setVisibility(View.GONE);
-                Toast.makeText(getApplicationContext(),"Error"+error,Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),"Error"+error,Toast.LENGTH_LONG).show();
+                Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
             }
 
             @Override
@@ -424,11 +453,13 @@ public class ManageVendor extends AppCompatActivity {
 //                progress.setVisibility(View.GONE);
 //                hider.setVisibility(View.GONE);
                 if(response.equals("1")) {
-                    Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout,"Saved",Snackbar.LENGTH_LONG).show();
                     refresh();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
 
                 }
             }

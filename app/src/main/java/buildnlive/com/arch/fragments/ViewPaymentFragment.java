@@ -3,44 +3,35 @@ package buildnlive.com.arch.fragments;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import buildnlive.com.arch.App;
 import buildnlive.com.arch.Interfaces;
 import buildnlive.com.arch.R;
-import buildnlive.com.arch.activities.CreateItem;
-import buildnlive.com.arch.activities.ImageView;
-import buildnlive.com.arch.adapters.ImageAdapter;
-import buildnlive.com.arch.adapters.ViewItemAdapter;
+import buildnlive.com.arch.activities.BillImageView;
 import buildnlive.com.arch.adapters.ViewPaymentAdapter;
 import buildnlive.com.arch.console;
-import buildnlive.com.arch.elements.Item;
 import buildnlive.com.arch.elements.PaymentItem;
-import buildnlive.com.arch.elements.ProjectList;
 import buildnlive.com.arch.utils.Config;
 
-import static android.widget.LinearLayout.HORIZONTAL;
 import static android.widget.LinearLayout.VERTICAL;
 
 public class ViewPaymentFragment extends Fragment {
@@ -48,8 +39,9 @@ public class ViewPaymentFragment extends Fragment {
     private RecyclerView items;
     private static App app;
     private ProgressBar progress;
-    private TextView hider;
+    private TextView hider,no_content;
     private FloatingActionButton fab;
+    private CoordinatorLayout coordinatorLayout;
     ViewPaymentAdapter.OnItemClickListener listener= new ViewPaymentAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(PaymentItem project, int pos, View view) {
@@ -60,7 +52,7 @@ public class ViewPaymentFragment extends Fragment {
         public void onButtonClick(PaymentItem item, int pos, View view) {
             Bundle bundle=new Bundle();
             bundle.putString("Link",item.getBill_copy());
-            Intent intent=new Intent(getActivity(),ImageView.class);
+            Intent intent=new Intent(getActivity(),BillImageView.class);
             intent.putExtras(bundle);
             startActivity(intent);
             //            LayoutInflater inflater = getLayoutInflater();
@@ -122,6 +114,8 @@ public class ViewPaymentFragment extends Fragment {
 
         TextView toolbar_title=getActivity().findViewById(R.id.toolbar_title);
         toolbar_title.setText("Payments");
+        no_content=view.findViewById(R.id.no_content);
+        coordinatorLayout=view.findViewById(R.id.coordinatorLayout);
         items = view.findViewById(R.id.items);
         progress = view.findViewById(R.id.progress);
         hider = view.findViewById(R.id.hider);
@@ -145,6 +139,14 @@ public class ViewPaymentFragment extends Fragment {
             public void onNetworkRequestError(String error) {
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);
+                final Snackbar snackbar = Snackbar.make(coordinatorLayout, "Something went wrong, Try again later", Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
+
             }
 
             @Override
@@ -170,6 +172,10 @@ public class ViewPaymentFragment extends Fragment {
 //                            }
 //                        });
                     }
+                    if(itemsList.isEmpty()){
+                        no_content.setVisibility(View.VISIBLE);
+                    }
+                    else no_content.setVisibility(View.GONE);
                     final ViewPaymentAdapter adapter = new ViewPaymentAdapter(getContext(), itemsList,listener);
                     items.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
                     DividerItemDecoration decoration = new DividerItemDecoration(getContext(), VERTICAL);

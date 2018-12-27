@@ -26,5 +26,8 @@
     <color name="c3">#ed3e75</color>
     <color name="c4">#f2ae4c</color>
     <color name="c5">#51b25c</color>
+    <color name="green">#27c41b</color>
+    <color name="darkGray">#525354</color>
+
 
 </resources>

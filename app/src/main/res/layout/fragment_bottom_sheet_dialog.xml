@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <TextView
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comments"
+        android:textColor="#5089e3"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:padding="5dp"
+        android:layout_gravity="center"
+        android:gravity="center"/>
+
+<!--<LinearLayout -->
+    <!--android:id="@+id/item_container"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_below="@+id/top"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:orientation="vertical"-->
+    <!--android:paddingBottom="5dp"-->
+    <!--android:paddingTop="5dp">-->
+
+    <!--android:layout_weight="0.5"-->
+
+    <!-- NOTE: This list should be displayed in a list
+    instead of nested layouts -->
+    <!--android:layout_weight="8.8"-->
+<android.support.v7.widget.RecyclerView
+android:layout_below="@+id/top"
+    android:id="@+id/items"
+    android:paddingBottom="5dp"
+    android:paddingTop="5dp"
+    android:layout_above="@+id/add_comment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+    <!--android:layout_weight="0.7"-->
+<!--</LinearLayout>-->
+
+    <LinearLayout
+        android:id="@+id/add_comment"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:id="@+id/write_comment"
+            android:layout_weight="0.9"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:hint="Write a Comment"
+            android:textSize="18sp"
+            android:padding="5dp"
+            android:layout_gravity="start"
+            android:background="@color/transparent"
+            android:gravity="start"/>
+        <ImageButton
+            android:id="@+id/send"
+            android:src="@drawable/ic_send"
+            android:background="@color/transparent"
+            android:layout_weight="0.1"
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</RelativeLayout>

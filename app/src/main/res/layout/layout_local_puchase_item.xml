@@ -20,6 +20,7 @@
             android:padding="5dp"
             android:text="lorem ipsum"
             android:textSize="18dp"
+            android:textColor="#5089e3"
             android:textStyle="bold" />
 
         <TextView

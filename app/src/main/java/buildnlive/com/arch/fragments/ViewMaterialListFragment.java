@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,6 +55,9 @@ public class ViewMaterialListFragment extends Fragment {
     private Fragment fragment;
     private android.app.AlertDialog.Builder builder;
     private TextView nothing;
+    private ProgressBar progress;
+    private TextView hider;
+    private CoordinatorLayout coordinatorLayout;
 
     public static ViewMaterialListFragment newInstance() {
         return new ViewMaterialListFragment();
@@ -116,7 +122,7 @@ public class ViewMaterialListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-//        refresh();
+        refresh();
     }
 
     @Nullable
@@ -129,9 +135,12 @@ public class ViewMaterialListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        refresh();
+
+        coordinatorLayout=view.findViewById(R.id.coordinatorLayout);
+        progress=view.findViewById(R.id.progress);
+        hider=view.findViewById(R.id.hider);
         TextView toolbar_title=getActivity().findViewById(R.id.toolbar_title);
-        toolbar_title.setText("My Projects");
+        toolbar_title.setText("Add Item");
 
         Realm realm =Realm.getDefaultInstance();
         nothing = view.findViewById(R.id.no_content);
@@ -145,6 +154,7 @@ public class ViewMaterialListFragment extends Fragment {
                 startActivity(new Intent(getActivity(),ManageItem.class));
             }
         });
+//        refresh();
     }
 
     private void refresh() {
@@ -156,23 +166,25 @@ public class ViewMaterialListFragment extends Fragment {
         app.sendNetworkRequest(requestUrl, Request.Method.GET, null, new Interfaces.NetworkInterfaceListener() {
             @Override
             public void onNetworkRequestStart() {
-//                progress.setVisibility(View.VISIBLE);
-//                hider.setVisibility(View.VISIBLE);
+                progress.setVisibility(View.VISIBLE);
+                hider.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onNetworkRequestError(String error) {
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                Snackbar snackbar= Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG);
+                snackbar.show();
             }
 
             @Override
             public void onNetworkRequestComplete(String response) {
 //                console.log(response);
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 try {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {

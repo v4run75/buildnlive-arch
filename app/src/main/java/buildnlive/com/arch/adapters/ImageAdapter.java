@@ -22,6 +22,15 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ViewHolder> 
     public interface OnItemClickListener {
         void onItemClick(Packet packet, int pos, View view);
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
 
     private final List<String> items;
     private Context context;

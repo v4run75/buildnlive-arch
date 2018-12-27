@@ -23,7 +23,15 @@ public class ProjectEmployeeAdapter extends RecyclerView.Adapter<ProjectEmployee
     public interface OnItemClickListener {
         void onItemClick(ProjectEmployee project, int pos, View view);
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     private final List<ProjectEmployee> items;
     private Context context;
     private final OnItemClickListener listener;
@@ -52,18 +60,20 @@ public class ProjectEmployeeAdapter extends RecyclerView.Adapter<ProjectEmployee
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView name;
+        private TextView name,type;
         private ImageButton delete;
 
         public ViewHolder(View view) {
             super(view);
             name= view.findViewById(R.id.project_name);
+            type=view.findViewById(R.id.project_type);
             delete= view.findViewById(R.id.delete);
 
         }
 
         public void bind(final Context context, final ProjectEmployee item, final int pos, final OnItemClickListener listener) {
             name.setText(item.getName());
+            type.setText(item.getType());
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

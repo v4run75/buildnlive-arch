@@ -3,6 +3,8 @@ package buildnlive.com.arch.fragments;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -50,6 +52,7 @@ public class IssueItemFragment extends Fragment {
     private ArrayAdapter item_adapter, receiver_adapter;
     private String selectedItem, selectedReceiver, itemName, receiverName;
     private AlertDialog.Builder builder;
+    private CoordinatorLayout coordinatorLayout;
 
     public static IssueItemFragment newInstance(App a) {
         app = a;
@@ -68,6 +71,7 @@ public class IssueItemFragment extends Fragment {
 
         TextView toolbar_title=getActivity().findViewById(R.id.toolbar_title);
         toolbar_title.setText("Issue Item");
+        coordinatorLayout=view.findViewById(R.id.coordinatorLayout);
         progress = view.findViewById(R.id.progress);
         hider = view.findViewById(R.id.hider);
         builder = new AlertDialog.Builder(getContext());
@@ -109,7 +113,14 @@ public class IssueItemFragment extends Fragment {
                                 if (quantity.getText().toString().length() > 0 && selectedItem.length() > 0 && selectedReceiver.length() > 0) {
                                     try {
                                         if (Float.parseFloat(quantity.getText().toString()) > Float.parseFloat(max.getText().toString())) {
-                                            Toast.makeText(getContext(), "Check Quantity!", Toast.LENGTH_SHORT).show();
+//                                            Toast.makeText(getContext(), "Check Quantity!", Toast.LENGTH_SHORT).show();
+                                            final Snackbar snackbar= Snackbar.make(coordinatorLayout,"Check Quantity",Snackbar.LENGTH_INDEFINITE);
+                                            snackbar.setAction("Dismiss", new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    snackbar.dismiss();
+                                                }
+                                            }).show();
                                             return;
                                         }
                                         sendIssue();
@@ -117,7 +128,14 @@ public class IssueItemFragment extends Fragment {
                                         e.printStackTrace();
                                     }
                                 } else {
-                                    Toast.makeText(getContext(), "Fill Data Properly!", Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(getContext(), "Fill Data Properly!", Toast.LENGTH_LONG).show();
+                                    final Snackbar snackbar= Snackbar.make(coordinatorLayout,"Fill Data Properly",Snackbar.LENGTH_INDEFINITE);
+                                    snackbar.setAction("Dismiss", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            snackbar.dismiss();
+                                        }
+                                    }).show();
                                 }
                             }
                         })
@@ -195,7 +213,14 @@ public class IssueItemFragment extends Fragment {
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);
                 console.error("Network request failed with error :" + error);
-                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+//                Toast.makeText(getContext(), "Check Network, Something went wrong", Toast.LENGTH_LONG).show();
+                final Snackbar snackbar= Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override
@@ -238,6 +263,13 @@ public class IssueItemFragment extends Fragment {
             public void onNetworkRequestError(String error) {
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);
+                final Snackbar snackbar= Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_INDEFINITE);
+                snackbar.setAction("Dismiss", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        snackbar.dismiss();
+                    }
+                }).show();
             }
 
             @Override
@@ -258,10 +290,17 @@ public class IssueItemFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Request Generated", Toast.LENGTH_SHORT).show();
                     getActivity().finish();
                 } else {
-                    Toast.makeText(getContext(), "Something went wrong :(", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), "Something went wrong :(", Toast.LENGTH_LONG).show();
+                    final Snackbar snackbar= Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_INDEFINITE);
+                    snackbar.setAction("Dismiss", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            snackbar.dismiss();
+                        }
+                    }).show();
                 }
             }
         });

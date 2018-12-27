@@ -61,7 +61,7 @@
                     android:layout_alignRight="@id/notification"
                     android:background="@drawable/badge_item_count"
                     android:text="27"
-                    android:visibility="invisible"
+                    android:visibility="gone"
                     android:textColor="#FFF"
                     android:textSize="10sp"
                     android:textStyle="bold" />

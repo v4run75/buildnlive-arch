@@ -8,14 +8,15 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:layout_marginRight="10dp"
         android:layout_marginEnd="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:textStyle="bold"
+        android:textColor="#5089e3"
         android:text="Name" />
     <TextView
         android:id="@+id/category"
@@ -27,7 +28,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
-        android:text="Category" />
+        android:text="Category"
+        android:textStyle="bold"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,17 +40,28 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:breakStrategy="high_quality"
-            android:padding="10dp"
-            android:layout_margin="10dp"
+            android:padding="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:text="Code" />
         <TextView
             android:id="@+id/unit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
             android:breakStrategy="high_quality"
-            android:padding="10dp"
+            android:padding="5dp"
+            android:textStyle="bold"
             android:text="Units" />
 
 

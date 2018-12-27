@@ -33,7 +33,15 @@ public class CreatePurchaseOrderAdapter extends RecyclerView.Adapter<CreatePurch
     private List<IndentItem> items,filteredItems;
     private Context context;
     private OnItemSelectedListener listener;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     public CreatePurchaseOrderAdapter(Context context, List<IndentItem> users, OnItemSelectedListener listener) {
         this.items = users;
         this.filteredItems=users;
@@ -105,7 +113,7 @@ public class CreatePurchaseOrderAdapter extends RecyclerView.Adapter<CreatePurch
             } else {
                 check.setVisibility(View.VISIBLE);
                 close.setVisibility(View.GONE);
-                check.setChecked(false);
+//                check.setChecked(false);
                 check.setEnabled(true);
                 quantity.setEnabled(true);
                 price.setEnabled(true);
@@ -113,14 +121,14 @@ public class CreatePurchaseOrderAdapter extends RecyclerView.Adapter<CreatePurch
                     @Override
                     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                         if (isChecked) {
-                            if ((quantity.getText().toString().length() > 0)&&(price.getText().toString().length()>0)) {
+                            if ((quantity.getText().toString().length() > 0)) {
                                 checkCount++;
                                 listener.onItemCheck(true);
                                 item.setUpdated(true);
                                 item.setQuantity(quantity.getText().toString());
                                 item.setRate(price.getText().toString());
                             } else {
-                                Toast.makeText(context, "Please enter quantity and price", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(context, "Please enter quantity", Toast.LENGTH_SHORT).show();
                                 buttonView.setChecked(false);
                             }
                         } else {

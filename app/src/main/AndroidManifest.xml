@@ -39,11 +39,10 @@
         <activity android:name=".activities.CreateItem" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageEmployee" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ImageView" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.BillImageView" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.CreatePurchaseOrder" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.CreateWorkActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageVendor" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.WorkData" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
 
 
         <activity
@@ -69,7 +68,9 @@
         <activity android:name=".activities.LabourActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageLabour" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageLabourReport" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
-        <activity android:name=".activities.ManageItem" />
+        <activity android:name=".activities.ManageItem" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait" />
+        <activity android:name=".activities.AddProjectActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait" />
+        <activity android:name=".activities.WorkProgressTrail" />
     </application>
 
 </manifest>

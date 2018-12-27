@@ -2,6 +2,7 @@ package buildnlive.com.arch.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,21 @@ import buildnlive.com.arch.R;
 import buildnlive.com.arch.elements.Item;
 import buildnlive.com.arch.elements.LocalPurchaseItem;
 import buildnlive.com.arch.elements.ProjectList;
+import buildnlive.com.arch.elements.Vendor;
 
 public class ViewLocalPurchaseAdapter extends RecyclerView.Adapter<ViewLocalPurchaseAdapter.ViewHolder> {
     private final List<LocalPurchaseItem> items;
     private Context context;
     private OnItemClickListener listener;
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     public interface OnItemClickListener {
         void onItemClick(LocalPurchaseItem item, int pos, View view);
         void onButtonClick(LocalPurchaseItem item, int pos, View view);
@@ -64,10 +74,14 @@ public class ViewLocalPurchaseAdapter extends RecyclerView.Adapter<ViewLocalPurc
 
         public void bind(final Context context, final LocalPurchaseItem item, final int pos, final OnItemClickListener listener) {
             name.setText(item.getName());
-            amount.setText("Total Amount: "+item.getTotal_amount());
-            vendor.setText("Vendor: "+item.getVendor_name());
-            bill_no.setText("Bill No: "+item.getBill_no());
-            quantity.setText("Quantity: "+item.getQuantity());
+            String vendor_string = "<b>Vendor: </b>"+item.getVendor_name();
+            String bill_string = "<b>Bill No: </b>"+item.getBill_no();
+            String amount_string = "<b>Amount: </b>"+item.getTotal_amount();
+            String quantity_string = "<b>Quantity: </b>"+item.getQuantity();
+            amount.setText(Html.fromHtml(amount_string));
+            vendor.setText(Html.fromHtml(vendor_string));
+            bill_no.setText(Html.fromHtml(bill_string));
+            quantity.setText(Html.fromHtml(quantity_string));
             billcopy.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

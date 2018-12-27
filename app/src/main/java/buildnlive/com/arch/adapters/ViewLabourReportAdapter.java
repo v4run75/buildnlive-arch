@@ -18,7 +18,15 @@ public class ViewLabourReportAdapter extends RecyclerView.Adapter<ViewLabourRepo
     public interface OnItemClickListener {
         void onItemClick(LabourReport project, int pos, View view);
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     private final List<LabourReport> items;
     private Context context;
     private final OnItemClickListener listener;

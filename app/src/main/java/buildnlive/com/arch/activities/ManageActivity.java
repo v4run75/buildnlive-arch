@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -15,10 +16,7 @@ import buildnlive.com.arch.Interfaces;
 import buildnlive.com.arch.R;
 import buildnlive.com.arch.console;
 import buildnlive.com.arch.fragments.EmployeeFragment;
-import buildnlive.com.arch.fragments.LocalPurchaseFragment;
-import buildnlive.com.arch.fragments.PaymentFragment;
 import buildnlive.com.arch.fragments.VendorFragment;
-import buildnlive.com.arch.fragments.ViewLocalPurchaseFragment;
 import io.realm.Realm;
 
 public class ManageActivity extends AppCompatActivity {
@@ -26,8 +24,6 @@ public class ManageActivity extends AppCompatActivity {
     private Realm realm;
     private Fragment fragment;
     private TextView edit, view;
-    Interfaces.SyncListener listener;
-    private ImageButton back;
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -40,15 +36,14 @@ public class ManageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
         app = (App) getApplication();
+        final Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        TextView toolbar_title=findViewById(R.id.toolbar_title);
+        toolbar_title.setText("Employee & Vendors");
         realm = Realm.getDefaultInstance();
         fragment = EmployeeFragment.newInstance();
-        back =findViewById(R.id.back);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
         changeScreen();
         edit = findViewById(R.id.edit);
         edit.setOnClickListener(new View.OnClickListener() {
@@ -72,6 +67,17 @@ public class ManageActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return super.onSupportNavigateUp();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
     private void changeScreen() {
         getSupportFragmentManager()
                 .beginTransaction()

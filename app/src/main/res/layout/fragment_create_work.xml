@@ -1,72 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    android:id="@+id/coordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-    <LinearLayout
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:background="@color/white">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-    <Spinner
-        android:id="@+id/category"
-        android:layout_margin="10dp"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-    />
-    <Spinner
-        android:id="@+id/work"
-        android:layout_weight="1"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        />
-    <TextView
-        android:id="@+id/or"
-        android:layout_weight="0.5"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:text="OR"
-        android:layout_margin="10dp"
-        android:gravity="center"
-        android:textSize="15sp"/>
-    <EditText
-        android:id="@+id/work_name"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:hint="Work Name"
-        android:layout_margin="20dp"/>
+            <Spinner
+                android:id="@+id/category"
+                android:prompt="@string/Category"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/border"
+                android:spinnerMode="dialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/border"
+                android:orientation="vertical">
+            <Spinner
+                android:id="@+id/work"
+                android:prompt="@string/Work"
+                android:spinnerMode="dialog"
+                android:background="@drawable/border"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/or"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="OR"
+                android:layout_margin="5dp"
+                android:gravity="center"
+                android:textSize="12sp"/>
+            <EditText
+                android:id="@+id/work_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Work Name"
+                android:background="@drawable/border"
+                android:padding="10dp"
+                android:layout_margin="10dp"/>
+            </LinearLayout>
 
-    <Button
-        android:id="@+id/submit"
-        android:background="@color/transparent"
-        android:text="Next"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_margin="20dp" />
-    </LinearLayout>
-    <ProgressBar
-        android:id="@+id/progress"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:indeterminate="true"
-        android:visibility="gone" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/duration"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:background="@drawable/border"
+                    android:padding="10dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Duration"
+                    android:inputType="numberDecimal"
+                    android:layout_margin="5dp"/>
+                <Spinner
+                    android:id="@+id/duration_type"
+                    android:layout_weight="1"
+                    android:prompt="@string/duration_type"
+                    android:padding="12dp"
+                    android:spinnerMode="dialog"
+                    android:layout_width="0dp"
+                    android:background="@drawable/border"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/duration_type"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
+            <LinearLayout
+
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+                <EditText
+                    android:id="@+id/quantity"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Quantity"
+                    android:background="@drawable/border"
+                    android:padding="11dp"
+                    android:inputType="numberDecimal"
+                    android:layout_margin="5dp"/>
+                <Spinner
+                    android:id="@+id/quantity_unit"
+                    android:layout_weight="1"
+                    android:prompt="@string/unit_select"
+                    android:layout_width="0dp"
+                    android:padding="11dp"
+                    android:background="@drawable/border"
+                    android:spinnerMode="dialog"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/quantity_unit"
+                    android:layout_margin="5dp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_margin="5dp"
+                    android:id="@+id/start_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:background="@drawable/border"
+                    android:padding="10dp"
+                    android:hint="Start Date"
+                    android:layout_weight="1"
+                    android:focusable="true" />
+                <TextView
+                    android:layout_margin="5dp"
+                    android:id="@+id/end_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border"
+                    android:padding="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="End Date"
+                    android:layout_weight="1"/>
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/assign_to"
+                android:prompt="@string/assign_to"
+                android:spinnerMode="dialog"
+                android:background="@drawable/border"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                />
+            <!--<Button-->
+                <!--android:id="@+id/submit"-->
+                <!--android:background="@color/transparent"-->
+                <!--android:text="Submit"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_margin="30dp" />-->
+            <Button
+                android:id="@+id/submit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingRight="20dp"
+                android:paddingLeft="20dp"
+                android:background="#6bb4dd"
+                android:text="Submit"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+        </LinearLayout>
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:indeterminate="true"
+            android:visibility="gone" />
 
 
-    <TextView
-        android:id="@+id/hider"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/top_bar"
-        android:alpha="0.6"
-        android:background="#ffffff"
-        android:visibility="gone" />
+        <TextView
+            android:id="@+id/hider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/top_bar"
+            android:alpha="0.6"
+            android:background="#ffffff"
+            android:visibility="gone" />
 
 
-</RelativeLayout>
+    </RelativeLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>

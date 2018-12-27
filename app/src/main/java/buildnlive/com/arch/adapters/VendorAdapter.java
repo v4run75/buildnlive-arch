@@ -22,7 +22,15 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
     public interface OnItemClickListener {
         void onItemClick(Vendor project, int pos, View view);
     }
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
 
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
     private final List<Vendor> items;
     private Context context;
     private final OnItemClickListener listener;
@@ -51,16 +59,20 @@ public class VendorAdapter extends RecyclerView.Adapter<VendorAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView name;
+        private TextView name,number,type;
 
         public ViewHolder(View view) {
             super(view);
             name= view.findViewById(R.id.project_name);
+            number= view.findViewById(R.id.number);
+            type= view.findViewById(R.id.type);
 
         }
 
         public void bind(final Context context, final Vendor item, final int pos, final OnItemClickListener listener) {
             name.setText(item.getVendor_name());
+            number.setText("GST Number: " + item.getGST());
+            type.setText(item.getType_id());
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
