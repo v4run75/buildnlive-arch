@@ -265,7 +265,7 @@ public class CreateWorkFragment extends Fragment {
                                 try {
                                     if(validate(cat_id,work_name_text.getText().toString(),work_id)) {
 //                                        Snackbar.make(coordinatorLayout,"True",Snackbar.LENGTH_LONG).show();
-                                        sendRequest(work_id, work_name_text.getText().toString(), assign_to_text, duration_text.getText().toString(), duration_type_text, quantity_text.getText().toString()
+                                        sendRequest(cat_id,work_id, work_name_text.getText().toString(), assign_to_text, duration_text.getText().toString(), duration_type_text, quantity_text.getText().toString()
                                                 , qty_unit, start_date.getText().toString(), end_date.getText().toString());
                                     }
                                 } catch (JSONException e) {
@@ -451,12 +451,13 @@ public class CreateWorkFragment extends Fragment {
             }
         });
     }
-    private void sendRequest(String work_id, String work_name, String assign_to,
+    private void sendRequest(String cat_id,String work_id, String work_name, String assign_to,
                              String duration, final String duration_type, String quantity, String quantity_type, final String start_date_text, String end_date_text) throws JSONException {
         HashMap<String, String> params = new HashMap<>();
         params.put("project_id", App.projectId);
         params.put("user_id", App.userId);
         params.put("work_id", work_id);
+        params.put("cat_id", cat_id);
         if(work_name.equals("Work Selected")){
             params.put("work_name","");
         }

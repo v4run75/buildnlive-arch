@@ -87,7 +87,8 @@ public class ManageItem extends AppCompatActivity {
         builder = new AlertDialog.Builder(this);
         categorySpinner=findViewById(R.id.category);
         itemSpinner=findViewById(R.id.item);
-        itemSpinner=findViewById(R.id.item);
+        typeSpinner=findViewById(R.id.type);
+
         codeView=findViewById(R.id.code);
         unitView=findViewById(R.id.unit);
         name=findViewById(R.id.name);
@@ -286,7 +287,10 @@ public class ManageItem extends AppCompatActivity {
         params.put("unit", unit);
         params.put("name", name);
         //TODO
-        params.put("type",type);
+        if(!type.equals("Daily Use")) {
+            params.put("type", type.toLowerCase());
+        }
+        else params.put("type","daily_use");
 
         console.log("Res:" + params);
         app.sendNetworkRequest(Config.SAVE_ITEM, 1, params, new Interfaces.NetworkInterfaceListener() {

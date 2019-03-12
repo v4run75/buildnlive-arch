@@ -81,8 +81,8 @@ public class DailyWorkProgressActivitesFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         context=getContext();
-        TextView toolbar_title=getActivity().findViewById(R.id.toolbar_title);
-        toolbar_title.setText("Work Progress");
+//        TextView toolbar_title=getActivity().findViewById(R.id.toolbar_title);
+//        toolbar_title.setText("Work Progress");
         app = (App) getActivity().getApplication();
 
 //        Bundle bundle = getArguments();
@@ -173,12 +173,13 @@ public class DailyWorkProgressActivitesFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    if (quantity.getText().toString() != null)
+                    if (!quantity.getText().toString().equals(""))
                         submit(activity, "", quantity.getText().toString(), images, alertDialog);
                     else
-                        Toast.makeText(getContext(), "Fill data properly!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "Fill Quantity", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), "Fill data properly!", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Fill Data Properly!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -231,18 +232,19 @@ public class DailyWorkProgressActivitesFragment extends Fragment {
                     .put("project_id", App.projectId)
                     .put("percentage_work", q / qo).toString());
             JSONArray array = new JSONArray();
-            for (Packet p : images) {
-                if (p.getName() != null) {
-                    Bitmap bm = BitmapFactory.decodeFile(p.getName());
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                    bm.compress(Bitmap.CompressFormat.JPEG, QUALITY, baos);
-                    byte[] b = baos.toByteArray();
-                    String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
-                    array.put(encodedImage);
-                }
-            }
+//            for (Packet p : images) {
+//                if (p.getName() != null) {
+//                    Bitmap bm = BitmapFactory.decodeFile(p.getName());
+//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    bm.compress(Bitmap.CompressFormat.JPEG, QUALITY, baos);
+//                    byte[] b = baos.toByteArray();
+//                    String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+//                    array.put(encodedImage);
+//                }
+//            }
             params.put("images",array.toString());
-
+            console.log("Update Act "+params);
+            console.log(Config.REQ_DAILY_WORK_ACTIVITY_UPDATE);
             app.sendNetworkRequest(Config.REQ_DAILY_WORK_ACTIVITY_UPDATE, 1, params, new Interfaces.NetworkInterfaceListener() {
                 @Override
                 public void onNetworkRequestStart() {

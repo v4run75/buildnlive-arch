@@ -1,5 +1,6 @@
 package buildnlive.com.arch.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,12 +16,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 
@@ -56,8 +60,9 @@ public class ManageVendor extends AppCompatActivity {
     private static String selection,type;
     private android.app.AlertDialog.Builder builder;
     private ProgressBar progress;
-    private TextView hider,editButton,save;
+    private TextView hider,editButton;
     private CoordinatorLayout coordinatorLayout;
+    private Context context;
 
     private ProjectEmployeeAdapter.OnItemClickListener listner = new ProjectEmployeeAdapter.OnItemClickListener() {
         @Override
@@ -105,20 +110,24 @@ public class ManageVendor extends AppCompatActivity {
         super.onStart();
         refresh();
         setProjectList();
-        name.setEnabled(false);
-        address.setEnabled(false);
-        type_id.setEnabled(false);
-        gst_no.setEnabled(false);
+//        name.setEnabled(false);
+//        address.setEnabled(false);
+//        type_id.setEnabled(false);
+//        gst_no.setEnabled(false);
     }
 
     @Override
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vendor_profile);
+        context=this;
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        TextView toolbar_title=findViewById(R.id.toolbar_title);
+        toolbar_title.setText("Employee Profile");
 
 
         app= ((App)getApplication());
@@ -133,7 +142,7 @@ public class ManageVendor extends AppCompatActivity {
         gst_no=findViewById(R.id.gst);
         editButton=findViewById(R.id.edit);
         fab=findViewById(R.id.add);
-        save=findViewById(R.id.save);
+//        save=findViewById(R.id.save);
         recyclerView=findViewById(R.id.item);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL);
@@ -145,42 +154,88 @@ public class ManageVendor extends AppCompatActivity {
         type_id.setText(VendorFragment.vendor_type_s);
         gst_no.setText(VendorFragment.vendor_gst_s);
 //        contact.setText(EmployeeFragment.mobile_no_s);
-        name.setEnabled(false);
-        address.setEnabled(false);
-        type_id.setEnabled(false);
+//        name.setEnabled(false);
+//        address.setEnabled(false);
+//        type_id.setEnabled(false);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editButton.setVisibility(View.GONE);
-                save.setVisibility(View.VISIBLE);
-                name.setEnabled(true);
-                address.setEnabled(true);
-//                type_id.setEnabled(true);
-                type_id.setVisibility(View.INVISIBLE);
-                gst_no.setEnabled(true);
+
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.alert_dialog_vendor, null);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context, R.style.PinDialog);
+                final AlertDialog alertDialog = dialogBuilder.setCancelable(false).setView(dialogView).create();
+                alertDialog.show();
+
+                final EditText name = dialogView.findViewById(R.id.alert_vendor_name);
+                final EditText address = dialogView.findViewById(R.id.alert_vendor_add);
+                final EditText gst = dialogView.findViewById(R.id.alert_vendor_gst);
+                final Spinner type = dialogView.findViewById(R.id.alert_vendor_type);
+                name.setText(VendorFragment.vendor_name_s);
+                address.setText(VendorFragment.vendor_address_s);
+//                type_id.setText(VendorFragment.vendor_type_s);
+                gst.setText(VendorFragment.vendor_gst_s);
+                Button positive = dialogView.findViewById(R.id.positive);
+                positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            editRequest(name.getText().toString(),address.getText().toString(),gst_no.getText().toString(),type.getSelectedItem().toString());
+                            final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
+                            alertDialog.dismiss();
+
+//                            if (!(name.getText().toString().equals("") || address.getText().toString().equals("")))
+//                            {
+//                                sendRequest(name.getText().toString(),address.getText().toString(),gst.getText().toString(),type.getSelectedItem().toString());
+//                                alertDialog.dismiss();
+//                            }
+//                            else
+//                                Toast.makeText(getContext(), "Fill data properly!", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(context, "Fill data properly!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                Button negative = dialogView.findViewById(R.id.negative);
+                negative.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
+                        alertDialog.dismiss();
+                    }
+                });
+//                editButton.setVisibility(View.GONE);
+//                save.setVisibility(View.VISIBLE);
+//                name.setEnabled(true);
+//                address.setEnabled(true);
+////                type_id.setEnabled(true);
+//                type_id.setVisibility(View.INVISIBLE);
+//                gst_no.setEnabled(true);
 
             }
         });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editButton.setVisibility(View.VISIBLE);
-                save.setVisibility(View.GONE);
-                name.setEnabled(false);
-                address.setEnabled(false);
-                type_id.setVisibility(View.VISIBLE);
-                type_id.setEnabled(false);
-                gst_no.setEnabled(false);
-                try {
-                    //TODO: Type ID Update
-                    editRequest(name.getText().toString(),address.getText().toString(),gst_no.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
+//        save.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                editButton.setVisibility(View.VISIBLE);
+//                save.setVisibility(View.GONE);
+//                name.setEnabled(false);
+//                address.setEnabled(false);
+//                type_id.setVisibility(View.VISIBLE);
+//                type_id.setEnabled(false);
+//                gst_no.setEnabled(false);
+//                try {
+//                    //TODO: Type ID Update
+//                    editRequest(name.getText().toString(),address.getText().toString(),gst_no.getText().toString());
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//        });
 //        refresh();
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -423,13 +478,13 @@ public class ManageVendor extends AppCompatActivity {
         });
     }
 
-    private void editRequest(String name,String address,String gst) throws JSONException {
+    private void editRequest(String name,String address,String gst,String type_id) throws JSONException {
         HashMap<String, String> params = new HashMap<>();
         String requestUrl=Config.UPDATE_VENDOR_DETAILS;
         params.put("vendor_id",VendorFragment.vendor_id_s);
         params.put("vendor_name",name);
         params.put("vendor_add",address);
-//        params.put("type_id",type_id);
+        params.put("type_id",type_id);
         params.put("gst",gst);
         console.log(params.toString());
         app.sendNetworkRequest(requestUrl, 1, params, new Interfaces.NetworkInterfaceListener() {
@@ -441,8 +496,8 @@ public class ManageVendor extends AppCompatActivity {
 
             @Override
             public void onNetworkRequestError(String error) {
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
 //                Toast.makeText(getApplicationContext(),"Error"+error,Toast.LENGTH_LONG).show();
                 Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
             }
@@ -450,8 +505,8 @@ public class ManageVendor extends AppCompatActivity {
             @Override
             public void onNetworkRequestComplete(String response) {
                 console.log(response);
-//                progress.setVisibility(View.GONE);
-//                hider.setVisibility(View.GONE);
+                progress.setVisibility(View.GONE);
+                hider.setVisibility(View.GONE);
                 if(response.equals("1")) {
 //                    Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
                     Snackbar.make(coordinatorLayout,"Saved",Snackbar.LENGTH_LONG).show();

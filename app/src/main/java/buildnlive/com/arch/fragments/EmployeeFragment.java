@@ -1,5 +1,6 @@
 package buildnlive.com.arch.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -67,6 +69,7 @@ public class EmployeeFragment extends Fragment {
         @Override
         public void onItemClick(Employee emp, int pos, View view) {
             email_s=emp.getEmail_add();
+            name_s=emp.getName();
             profession_s=emp.getProfession_name();
             user_id_s=emp.getUser_id();
             mobile_no_s=emp.getMobile_no();
@@ -131,9 +134,12 @@ public class EmployeeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 try {
-                    if (!(email.getText().toString().equals("") || mob.getText().toString().equals("")||profession.getSelectedItem().equals("Select ID")))
+
+                    if (!(email.getText().toString().equals("") && !mob.getText().toString().equals("")&& !(mob.getText().toString().length()<10)&& !profession.getSelectedItem().equals("Select ID")))
                     {
                         sendRequest(email.getText().toString(),mob.getText().toString(),profession.getSelectedItem().toString());
+                        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
                         alertDialog.dismiss();
                     }
                     else
@@ -147,6 +153,8 @@ public class EmployeeFragment extends Fragment {
         negative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
                 alertDialog.dismiss();
             }
         });
@@ -157,7 +165,7 @@ public class EmployeeFragment extends Fragment {
         requestURl = requestURl.replace("[0]", App.userId);
         params.put("mobile_no",employee_mob);
         params.put("email_add", employee_email);
-        params.put("profession_id", profession_id);
+        params.put("profession_name", profession_id);
         console.log("Res:" + params);
 
         app.sendNetworkRequest(requestURl, com.android.volley.Request.Method.POST, params, new Interfaces.NetworkInterfaceListener() {
@@ -181,7 +189,7 @@ public class EmployeeFragment extends Fragment {
             public void onNetworkRequestComplete(String response) {
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);
-                console.log(response);
+                console.log("After Update "+response);
 //                try {
 //                    JSONArray array = new JSONArray(response);
 //                    for (int i = 0; i < array.length(); i++) {
@@ -189,6 +197,11 @@ public class EmployeeFragment extends Fragment {
 //                    }
 //                    adapter.notifyDataSetChanged();
 //                }
+                if(response.equals("-2")){
+                    Toast.makeText(getContext(),"Employee Already Exists",Toast.LENGTH_LONG).show();
+                    refresh();
+                }
+                else{
                 try {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0; i < array.length(); i++) {
@@ -207,6 +220,7 @@ public class EmployeeFragment extends Fragment {
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
             }
         });
     }

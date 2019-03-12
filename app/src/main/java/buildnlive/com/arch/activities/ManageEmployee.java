@@ -1,5 +1,6 @@
 package buildnlive.com.arch.activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,16 +16,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +40,7 @@ import buildnlive.com.arch.R;
 import buildnlive.com.arch.adapters.ProjectEmployeeAdapter;
 import buildnlive.com.arch.adapters.ProjectSpinAdapter;
 import buildnlive.com.arch.console;
+import buildnlive.com.arch.elements.Employee;
 import buildnlive.com.arch.elements.ProjectEmployee;
 import buildnlive.com.arch.elements.ProjectList;
 import buildnlive.com.arch.fragments.EmployeeFragment;
@@ -47,7 +53,7 @@ public class ManageEmployee extends AppCompatActivity {
     private static ArrayList<ProjectList> list=new ArrayList<>();
     private Realm realm;
     private Fragment fragment;
-    private TextView edit, view,name,email,profession,contact,no_content,editButton,save;
+    private TextView edit, view,nameView,emailView,professionView,contactView,no_content,editButton;
     Interfaces.SyncListener listener;
 //    private ImageButton editButton,save;
     private FloatingActionButton fab;
@@ -58,7 +64,10 @@ public class ManageEmployee extends AppCompatActivity {
     private ProgressBar progress;
     private TextView hider;
     private CoordinatorLayout coordinatorLayout;
+    private Context context;
+    Employee employee;
 
+    private ArrayList<Employee> employeeList=new ArrayList<>();
     private ProjectEmployeeAdapter.OnItemClickListener listner = new ProjectEmployeeAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(final ProjectEmployee project, final int pos, View view) {
@@ -105,10 +114,10 @@ public class ManageEmployee extends AppCompatActivity {
         super.onStart();
         refresh();
         setProjectList();
-        name.setEnabled(false);
-        email.setEnabled(false);
-        profession.setEnabled(false);
-        contact.setEnabled(false);
+//        name.setEnabled(false);
+//        email.setEnabled(false);
+//        profession.setEnabled(false);
+//        contact.setEnabled(false);
     }
 
     @Override
@@ -116,7 +125,9 @@ public class ManageEmployee extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_profile);
         builder = new android.app.AlertDialog.Builder(this);
-
+        TextView toolbar_title=findViewById(R.id.toolbar_title);
+        toolbar_title.setText("Employee Profile");
+        context=this;
         coordinatorLayout=findViewById(R.id.coordinatorLayout);
         progress=findViewById(R.id.progress);
         hider=findViewById(R.id.hider);
@@ -129,60 +140,109 @@ public class ManageEmployee extends AppCompatActivity {
 
         no_content=findViewById(R.id.no_content);
         app= ((App)getApplication());
-        name=findViewById(R.id.name);
-        email=findViewById(R.id.email);
-        profession=findViewById(R.id.profession);
-        contact=findViewById(R.id.mobile_no);
+        nameView=findViewById(R.id.name);
+        emailView=findViewById(R.id.email);
+        professionView=findViewById(R.id.profession);
+        contactView=findViewById(R.id.mobile_no);
 //        back=findViewById(R.id.back);
         editButton=findViewById(R.id.edit);
         fab=findViewById(R.id.add);
-        save=findViewById(R.id.save);
+//        save=findViewById(R.id.save);
         recyclerView=findViewById(R.id.item);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false));
         DividerItemDecoration decoration = new DividerItemDecoration(getApplicationContext(), LinearLayoutManager.VERTICAL);
         recyclerView.addItemDecoration(decoration);
 
 
-
-        email.setText(EmployeeFragment.email_s);
-        profession.setText(EmployeeFragment.profession_s);
-        contact.setText(EmployeeFragment.mobile_no_s);
-        name.setEnabled(false);
-        email.setEnabled(false);
-        profession.setEnabled(false);
-        contact.setEnabled(false);
+        nameView.setText(EmployeeFragment.name_s);
+        emailView.setText(EmployeeFragment.email_s);
+        professionView.setText(EmployeeFragment.profession_s);
+        contactView.setText(EmployeeFragment.mobile_no_s);
+//        name.setEnabled(false);
+//        email.setEnabled(false);
+//        profession.setEnabled(false);
+//        contact.setEnabled(false);
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                editButton.setVisibility(View.GONE);
-                save.setVisibility(View.VISIBLE);
-                name.setEnabled(true);
-                email.setEnabled(true);
-//                profession.setEnabled(true);
-                profession.setVisibility(View.INVISIBLE);
-                contact.setEnabled(true);
+                LayoutInflater inflater = getLayoutInflater();
+                View dialogView = inflater.inflate(R.layout.alert_dialog_employee, null);
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(context, R.style.PinDialog);
+                final AlertDialog alertDialog = dialogBuilder.setCancelable(false).setView(dialogView).create();
+                alertDialog.show();
+                final EditText name= dialogView.findViewById(R.id.alert_name);
+                final EditText email = dialogView.findViewById(R.id.alert_employee_name);
+                final EditText mob = dialogView.findViewById(R.id.alert_employee_type);
+                final Spinner profession = dialogView.findViewById(R.id.profession_id);
+                email.setText(EmployeeFragment.email_s);
+                name.setVisibility(View.VISIBLE);
+                name.setText(EmployeeFragment.name_s);
+//                profession.setText(EmployeeFragment.profession_s);
+                mob.setText(EmployeeFragment.mobile_no_s);
+                Button positive = dialogView.findViewById(R.id.positive);
+                positive.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        try {
+                            final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
+
+                            editRequest(name.getText().toString(),email.getText().toString(),mob.getText().toString(),profession.getSelectedItem().toString());
+                            alertDialog.dismiss();
+//                            if (!(email.getText().toString().equals("") || mob.getText().toString().equals("")||profession.getSelectedItem().equals("Select ID")))
+//                            {
+//                                sendRequest(email.getText().toString(),mob.getText().toString(),profession.getSelectedItem().toString());
+//                                alertDialog.dismiss();
+//                            }
+//                            else
+//                                Toast.makeText(getContext(), "Fill data properly!", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), "Fill data properly!", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                Button negative = dialogView.findViewById(R.id.negative);
+                negative.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
+
+                        alertDialog.dismiss();
+                    }
+                });
+
+
+
+//                editButton.setVisibility(View.GONE);
+//                save.setVisibility(View.VISIBLE);
+//                name.setEnabled(true);
+//                email.setEnabled(true);
+////                profession.setEnabled(true);
+//                profession.setVisibility(View.INVISIBLE);
+//                contact.setEnabled(true);
 
             }
         });
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                editButton.setVisibility(View.VISIBLE);
-                save.setVisibility(View.GONE);
-                name.setEnabled(false);
-                email.setEnabled(false);
-                profession.setVisibility(View.VISIBLE);
-                profession.setEnabled(false);
-                contact.setEnabled(false);
-                try {
-                    editRequest(name.getText().toString(),email.getText().toString(),contact.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-
-            }
-        });
+//        save.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                editButton.setVisibility(View.VISIBLE);
+//                save.setVisibility(View.GONE);
+//                name.setEnabled(false);
+//                email.setEnabled(false);
+//                profession.setVisibility(View.VISIBLE);
+//                profession.setEnabled(false);
+//                contact.setEnabled(false);
+//                try {
+//                    editRequest(name.getText().toString(),email.getText().toString(),contact.getText().toString());
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//
+//            }
+//        });
 //        refresh();
 //        setProjectList();
 //        back.setOnClickListener(new View.OnClickListener() {
@@ -434,13 +494,13 @@ public class ManageEmployee extends AppCompatActivity {
         });
     }
 
-    private void editRequest(String name,String email,String contact ) throws JSONException {
+    private void editRequest(String name,String email,String contact,String profession) throws JSONException {
         HashMap<String, String> params = new HashMap<>();
         String requestUrl=Config.UPDATE_USER_DETAILS;
         params.put("user_id",EmployeeFragment.user_id_s);
         params.put("name",name);
         params.put("email_add",email);
-//        params.put("profession_id",profession);
+        params.put("profession_name",profession);
         params.put("mobile_no",contact);
         console.log(params.toString());
         app.sendNetworkRequest(requestUrl, 1, params, new Interfaces.NetworkInterfaceListener() {
@@ -460,21 +520,35 @@ public class ManageEmployee extends AppCompatActivity {
 
             @Override
             public void onNetworkRequestComplete(String response) {
-                console.log(response);
-                progress.setVisibility(View.GONE);
-                hider.setVisibility(View.GONE);
-                if(response.equals("1")) {
+                if (response.equals("-2")) {
+                    Toast.makeText(context, "User Already Exists", Toast.LENGTH_LONG).show();
+                } else {
+                    console.log("EDIT:" + response);
+                    progress.setVisibility(View.GONE);
+                    hider.setVisibility(View.GONE);
+                    JSONObject obj = null;
+                    try {
+                        obj = new JSONObject(response);
+                        employee = new Employee().parseFromJSON(obj);
+                        nameView.setText(employee.getName());
+//                     employeeList.add(new Employee().parseFromJSON(obj));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+//                nameView.setText(employeeList.get(0).getName());
+
+//                if(response.equals("1")) {
 //                    Toast.makeText(getApplicationContext(), "Saved", Toast.LENGTH_SHORT).show();
 
-                    Snackbar.make(coordinatorLayout,"Saved",Snackbar.LENGTH_LONG).show();
+//                    Snackbar.make(coordinatorLayout,"Saved",Snackbar.LENGTH_LONG).show();
                     refresh();
                 }
-                else{
-//                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
-                    Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
-
-                }
             }
+//                else{
+////                    Toast.makeText(getApplicationContext(), "Check Your Network", Toast.LENGTH_SHORT).show();
+//                    Snackbar.make(coordinatorLayout,"Check Network, Something went wrong",Snackbar.LENGTH_LONG).show();
+//
+//                }
         });
     }
 

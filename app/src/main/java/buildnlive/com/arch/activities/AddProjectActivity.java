@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -121,14 +122,15 @@ public class AddProjectActivity extends AppCompatActivity {
                 catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Request Generated", Snackbar.LENGTH_LONG).setAction("DISMISS", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        finish();
-                    }
-                });
-                snackbar.show();
+                Toast.makeText(getApplicationContext(),"Request Generated",Toast.LENGTH_LONG).show();
+                finish();
+//                Snackbar snackbar = Snackbar.make(coordinatorLayout, "Request Generated", Snackbar.LENGTH_LONG).setAction("DISMISS", new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        finish();
+//                    }
+//                });
+//                snackbar.show();
             }
         });
     }

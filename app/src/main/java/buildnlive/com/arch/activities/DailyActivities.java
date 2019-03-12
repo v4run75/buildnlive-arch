@@ -25,7 +25,7 @@ import buildnlive.com.arch.fragments.DailyWorkProgressActivitesFragment;
 import buildnlive.com.arch.fragments.TrailFragment;
 import buildnlive.com.arch.fragments.ViewItemFragment;
 
-public class WorkProgressTrail extends AppCompatActivity {
+public class DailyActivities extends AppCompatActivity {
     private App app;
     private RecyclerView items;
     private DailyWorkActivityAdapter adapter;
@@ -54,13 +54,13 @@ public class WorkProgressTrail extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_comments);
+        setContentView(R.layout.activity_daily_work_activities);
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         TextView textView = findViewById(R.id.toolbar_title);
-        textView.setText("Comments");
+        textView.setText("Activities");
 
         final Bundle bundle = getIntent().getExtras();
         assert bundle != null;
@@ -69,7 +69,7 @@ public class WorkProgressTrail extends AppCompatActivity {
 //        edit = findViewById(R.id.edit);
 //        view = findViewById(R.id.view);
 //        fragment.setArguments(bundle);
-        fragment = TrailFragment.newInstance(id);
+        fragment = DailyWorkProgressActivitesFragment.newInstance(id);
         changeScreen();
 //        edit = findViewById(R.id.edit);
 //        edit.setOnClickListener(new View.OnClickListener() {

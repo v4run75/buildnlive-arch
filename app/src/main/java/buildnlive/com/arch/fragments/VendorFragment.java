@@ -1,5 +1,6 @@
 package buildnlive.com.arch.fragments;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -132,6 +134,9 @@ public class VendorFragment extends Fragment {
                     if (!(name.getText().toString().equals("") || address.getText().toString().equals("")))
                     {
                         sendRequest(name.getText().toString(),address.getText().toString(),gst.getText().toString(),type.getSelectedItem().toString());
+                        final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
+
                         alertDialog.dismiss();
                     }
                     else
@@ -145,6 +150,8 @@ public class VendorFragment extends Fragment {
         negative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(alertDialog.getWindow().getDecorView().getWindowToken(), 0);
                 alertDialog.dismiss();
             }
         });

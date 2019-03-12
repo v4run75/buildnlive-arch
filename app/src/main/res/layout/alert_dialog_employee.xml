@@ -17,20 +17,42 @@
             android:id="@+id/alert_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color3"
-            android:padding="10dp"
-            android:text="Add Employee"
+            android:background="@color/white"
+            android:padding="5dp"
+            android:text="Employee"
             android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="25dp" />
-
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="25sp" />
+        <View
+            android:id="@+id/separator"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/alert_title"
+            android:background="#e8e8e8"/>
+        <EditText
+            android:id="@+id/alert_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/separator"
+            android:background="@drawable/border"
+            android:padding="10dp"
+            android:inputType="textEmailAddress"
+            android:layout_margin="10dp"
+            android:hint="Name"
+            android:textAlignment="center"
+            android:textColor="@color/color4"
+            android:visibility="gone"
+            android:textSize="18dp" />
         <EditText
             android:id="@+id/alert_employee_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/alert_title"
-            android:background="@color/white"
+            android:layout_below="@+id/alert_name"
+            android:background="@drawable/border"
             android:padding="10dp"
+            android:inputType="textEmailAddress"
+            android:layout_margin="10dp"
             android:hint="Employee Email"
             android:textAlignment="center"
             android:textColor="@color/color4"
@@ -41,17 +63,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/alert_employee_name"
-            android:background="@color/white"
+            android:background="@drawable/border"
             android:padding="10dp"
+            android:inputType="number"
+            android:layout_margin="10dp"
             android:hint="Employee Mobile Number"
             android:textAlignment="center"
+            android:maxLength="10"
             android:textColor="@color/color4"
             android:textSize="18dp" />
         <Spinner
-            android:layout_margin="5dp"
+            android:padding="10dp"
+            android:layout_margin="10dp"
             android:id="@+id/profession_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:spinnerMode="dialog"
+            android:prompt="@string/profession"
+            android:background="@drawable/border"
             android:layout_below="@+id/alert_employee_type"
             android:entries="@array/employee_type">
 
@@ -70,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_normal_disable"
+                android:background="@color/transparent"
                 android:text="Close"
                 android:textColor="@color/black"
                 android:textSize="16dp" />
@@ -81,8 +110,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:background="@drawable/button_normal_enable"
-                android:text="Yes"
+                android:background="#5089e3"
+                android:text="Submit"
                 android:textColor="@color/white"
                 android:textSize="16dp" />
 

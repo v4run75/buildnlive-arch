@@ -2,6 +2,7 @@ package buildnlive.com.arch.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -49,6 +50,7 @@ import buildnlive.com.arch.Interfaces;
 import buildnlive.com.arch.R;
 import buildnlive.com.arch.adapters.ActivityImagesAdapter;
 import buildnlive.com.arch.adapters.DailyWorkAdapter;
+import buildnlive.com.arch.adapters.SingleImageAdapter;
 import buildnlive.com.arch.console;
 import buildnlive.com.arch.elements.Packet;
 import buildnlive.com.arch.elements.Work;
@@ -61,7 +63,7 @@ public class WorkProgress extends AppCompatActivity {
     private App app;
     private TextView edit, filter,view,reset;
     private Fragment fragment;
-    private String status_text,category_text; 
+    private String status_text,category_text,results;
     private RecyclerView items;
     private ProgressBar progress;
     private TextView hider,no_content;
@@ -73,6 +75,7 @@ public class WorkProgress extends AppCompatActivity {
     public static final int QUALITY = 10;
     private ImageButton back;
     private Context context;
+    public static final int REQUEST_GALLERY_IMAGE = 7191;
 
 
 
@@ -259,8 +262,8 @@ public class WorkProgress extends AppCompatActivity {
                         {
                             category_text="";
                         }
-                        String start_date=startDateDD.getText()+"/"+startDateMM.getText()+"/"+startDateYYYY.getText();
-                        String end_date=endDateDD.getText()+"/"+endDateMM.getText()+"/"+endDateYYYY.getText();
+                        String start_date=startDateYYYY.getText()+"-"+startDateMM.getText()+"-"+startDateDD.getText();
+                        String end_date=endDateYYYY.getText()+"-"+endDateMM.getText()+"-"+endDateDD.getText();
                         console.log(start_date+" "+end_date);
                         filter(status_text,category_text,start_date,end_date);
                         alertDialog.dismiss();
@@ -290,6 +293,7 @@ public class WorkProgress extends AppCompatActivity {
         String filterURL = Config.WORK_FILTERS;
         HashMap<String, String> params = new HashMap<>();
         params.put("status", status);
+        params.put("project_id", App.projectId);
         params.put("category_filter",category);
         params.put("start_date",startdate);
         params.put("end_date",enddate);
@@ -335,11 +339,21 @@ public class WorkProgress extends AppCompatActivity {
                     }
                     adapter = new DailyWorkAdapter(context, workslist, new DailyWorkAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(int pos, View view) {
+                        public void onItemClick(int pos, View view, int type) {
 //                            Intent intent = new Intent(context, DailyWorkProgressActivities.class);
-                            Intent intent = new Intent(context, WorkProgressTrail.class);
-                            intent.putExtra("id", workslist.get(pos).getWorkListId());
-                            startActivity(intent);
+                            if(type==1){
+
+                                Intent intent = new Intent(context, WorkProgressTrail.class);
+                                intent.putExtra("id", workslist.get(pos).getWorkListId());
+                                startActivity(intent);
+                            }
+                            else if(type==2)
+                            {
+
+                                Intent intent = new Intent(context, DailyActivities.class);
+                                intent.putExtra("id", workslist.get(pos).getWorkListId());
+                                startActivity(intent);
+                            }
                         }
                     }, new DailyWorkAdapter.OnButtonClickListener() {
                         @Override
@@ -400,13 +414,27 @@ public class WorkProgress extends AppCompatActivity {
                     if(workslist.isEmpty()){
                         no_content.setVisibility(View.VISIBLE);
                     }
+                    else no_content.setVisibility(View.GONE);
                     adapter = new DailyWorkAdapter(context, workslist, new DailyWorkAdapter.OnItemClickListener() {
                         @Override
-                        public void onItemClick(int pos, View view) {
+                        public void onItemClick(int pos, View view, int type) {
 //                            Intent intent = new Intent(context, DailyWorkProgressActivities.class);
-                            Intent intent = new Intent(context, WorkProgressTrail.class);
-                            intent.putExtra("id", workslist.get(pos).getWorkListId());
-                            startActivity(intent);
+//                            Intent intent = new Intent(context, WorkProgressTrail.class);
+//                            intent.putExtra("id", workslist.get(pos).getWorkListId());
+//                            startActivity(intent);
+                            if(type==1){
+
+                                Intent intent = new Intent(context, WorkProgressTrail.class);
+                                intent.putExtra("id", workslist.get(pos).getWorkListId());
+                                startActivity(intent);
+                            }
+                            else if(type==2)
+                            {
+
+                                Intent intent = new Intent(context, DailyActivities.class);
+                                intent.putExtra("id", workslist.get(pos).getWorkListId());
+                                startActivity(intent);
+                            }
                         }
                     }, new DailyWorkAdapter.OnButtonClickListener() {
                         @Override
@@ -450,21 +478,60 @@ public class WorkProgress extends AppCompatActivity {
             @Override
             public void onItemClick(Packet packet, int pos, View view) {
                 if (pos == 0) {
-                    Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    if (pictureIntent.resolveActivity(getPackageManager()) != null) {
 
-                        File photoFile = null;
-                        try {
-                            photoFile = createImageFile();
-                        } catch (IOException ex) {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View dialogView = inflater.inflate(R.layout.image_chooser, null);
+                    android.support.v7.app.AlertDialog.Builder dialogBuilder = new android.support.v7.app.AlertDialog.Builder(context, R.style.PinDialog);
+                    final android.support.v7.app.AlertDialog alertDialog = dialogBuilder.setCancelable(false).setView(dialogView).create();
+                    alertDialog.show();
+                    final TextView gallery= dialogView.findViewById(R.id.gallery);
+                    final TextView camera= dialogView.findViewById(R.id.camera);
+
+                    gallery.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                            Intent pictureIntent = new Intent(Intent.ACTION_PICK,
+                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(pictureIntent, REQUEST_GALLERY_IMAGE);
+
                         }
-                        if (photoFile != null) {
-                            Uri photoURI = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", photoFile);
-                            pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                            imagePath = photoFile.getAbsolutePath();
-                            startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE);
+                    });
+
+                    camera.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            alertDialog.dismiss();
+                            Intent pictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            if (pictureIntent.resolveActivity(getPackageManager()) != null) {
+
+                                File photoFile = null;
+                                try {
+                                    photoFile = createImageFile();
+                                } catch (IOException ex) {
+                                }
+                                if (photoFile != null) {
+                                    Uri photoURI = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider", photoFile);
+                                    pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                                    imagePath = photoFile.getAbsolutePath();
+                                    startActivityForResult(pictureIntent, REQUEST_CAPTURE_IMAGE);
+                                }
+                            }
                         }
-                    }
+                    });
+
+                    Button negative = dialogView.findViewById(R.id.negative);
+                    negative.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            alertDialog.dismiss();
+                        }
+                    });
+
+                } else{
+                    images.remove(pos);
+                    imagesAdapter.notifyItemRemoved(pos);
+                    imagesAdapter.notifyDataSetChanged();
                 }
             }
         });
@@ -498,14 +565,32 @@ public class WorkProgress extends AppCompatActivity {
             }
         });
     }
+//
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == REQUEST_CAPTURE_IMAGE) {
+//            if (resultCode == android.app.Activity.RESULT_OK) {
+//                Packet packet = images.remove(0);
+//                packet.setName(imagePath);
+//                images.add(0, new Packet());
+//                images.add(packet);
+//                imagesAdapter.notifyDataSetChanged();
+//            } else if (resultCode == android.app.Activity.RESULT_CANCELED) {
+//                console.log("Canceled");
+//            }
+//        }
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CAPTURE_IMAGE) {
             if (resultCode == android.app.Activity.RESULT_OK) {
                 Packet packet = images.remove(0);
                 packet.setName(imagePath);
+//                Uri uri=data.getData();
+//                packet.setName(getRealPathFromURI(uri));
+                console.log("Image Path "+packet.getName()+"EXTRAS "+packet.getExtra());
                 images.add(0, new Packet());
                 images.add(packet);
                 imagesAdapter.notifyDataSetChanged();
@@ -513,7 +598,39 @@ public class WorkProgress extends AppCompatActivity {
                 console.log("Canceled");
             }
         }
+        else if(requestCode == REQUEST_GALLERY_IMAGE){
+            Packet packet = images.remove(0);
+//            packet.setName(imagePath);
+            Uri uri=data.getData();
+            packet.setName(getRealPathFromURI(uri));
+            console.log("Image Path "+packet.getName()+"EXTRAS "+packet.getExtra());
+            images.add(0, new Packet());
+            images.add(packet);
+            imagesAdapter.notifyDataSetChanged();
+        }
     }
+    // And to convert the image URI to the direct file system path of the image file
+    public String getRealPathFromURI(Uri contentUri) {
+
+        // can post image
+        String [] proj={MediaStore.Images.Media.DATA};
+        Cursor cursor =context.getContentResolver().query(contentUri,
+                proj, // Which columns to return
+                null,       // WHERE clause; which rows to return (all rows)
+                null,       // WHERE clause selection arguments (none)
+                null); // Order-by clause (ascending by name)
+        if(cursor.moveToFirst()){
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            results = cursor.getString(column_index);
+        }
+//                managedQuery( );
+        cursor.moveToFirst();
+        cursor.close();
+        return results;
+    }
+
+
+
 
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());

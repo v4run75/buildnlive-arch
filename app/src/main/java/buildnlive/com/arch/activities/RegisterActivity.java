@@ -147,10 +147,13 @@ public class RegisterActivity extends AppCompatActivity {
             public void onNetworkRequestComplete(String response) {
                 console.log("Response:" + response);
                 if (response.equals("0")) {
-                    Toast.makeText(context, "User Does Not Exist", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Error, Contact Admin", Toast.LENGTH_LONG).show();
                 } else if(response.equals("1")) {
-                    Toast.makeText(context,"New password has been sent to your email",Toast.LENGTH_LONG).show();
+                    Toast.makeText(context,"Successfully Registered",Toast.LENGTH_LONG).show();
                     finish();
+                }
+                else if(response.equals("-2")){
+                    Toast.makeText(context,"User Already Exists",Toast.LENGTH_LONG).show();
                 }
                 progress.setVisibility(View.GONE);
                 hider.setVisibility(View.GONE);

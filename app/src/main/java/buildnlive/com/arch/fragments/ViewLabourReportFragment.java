@@ -61,7 +61,7 @@ public class ViewLabourReportFragment extends Fragment {
     private android.app.AlertDialog.Builder builder;
     public static String name_s,date_s,daily_report_id_s;
     private ProgressBar progress;
-    private TextView hider;
+    private TextView hider,no_content;
     private CoordinatorLayout coordinatorLayout;
 
     public static ViewLabourReportFragment newInstance() {
@@ -95,7 +95,7 @@ public class ViewLabourReportFragment extends Fragment {
         recyclerView=view.findViewById(R.id.items);
         app=(App) getActivity().getApplication();
         builder = new android.app.AlertDialog.Builder(getContext());
-
+        no_content=view.findViewById(R.id.no_content);
         progress=view.findViewById(R.id.progress);
         coordinatorLayout = view.findViewById(R.id.coordinatorLayout);
         hider=view.findViewById(R.id.hider);
@@ -151,6 +151,10 @@ public class ViewLabourReportFragment extends Fragment {
                     for (int i = 0; i < array.length(); i++) {
                         labourList.add(new LabourReport().parseFromJSON(array.getJSONObject(i)));
                     }
+
+                    if (labourList.isEmpty()){
+                        no_content.setVisibility(View.VISIBLE);
+                    }else no_content.setVisibility(View.GONE);
                     console.log("data set changed");
                     adapter = new ViewLabourReportAdapter(getContext(), labourList, listner);
                     recyclerView.setAdapter(adapter);

@@ -70,7 +70,10 @@
         <activity android:name=".activities.ManageLabourReport" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
         <activity android:name=".activities.ManageItem" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait" />
         <activity android:name=".activities.AddProjectActivity" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait" />
-        <activity android:name=".activities.WorkProgressTrail" />
+        <activity android:name=".activities.WorkProgressTrail" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.DailyActivities" android:windowSoftInputMode="stateHidden" android:screenOrientation="portrait"/>
+        <activity android:name=".activities.WorkUpdate" />
+        <activity android:name=".activities.NotificationDetailView" />
     </application>
 
 </manifest>
